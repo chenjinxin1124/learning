@@ -1,0 +1,19 @@
+﻿1.请简述 mapreduce 中的 combine 和 partition 的作用
+
+2. Hbase 的 rowKey 怎么创建比较好？列簇怎么创建比较好？
+
+3.在Java中，List 与 set 的区别
+
+4.三个 datanode 中当有一个 datanode 出现错误时会怎样？
+
+5.描述一下MapReduce的大致流程
+
+6.在Java中，ArrayList、Vector、LinkedList 的区别及其优缺点？HashMap、HashTable 的区别及其优缺点？
+
+7.文件大小默认为 64M，改为 128M 有啥影响？
+
+8.简要描述如何安装配置apache 的一个开源Hadooop,只描述即可，无需列出具体步骤，列出具体步
+骤更好。
+
+9.请列出正常的 hadoop 集群中Hadoop都分别需要启动哪些进程，他们的作用分别都是什么，请尽量
+列的详细一些。

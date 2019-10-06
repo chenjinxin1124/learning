@@ -1,0 +1,19 @@
+﻿技术笔试:
+	笔试基础题: http://www.it610.com/article/5022639.htm
+技术面试:
+	1. 对Spark技术掌握情况, 架构原理, 哪里用到Spark, 为什么用Spark
+	2. HBase, Hive, MR, MySQL, Spark的优化问题, 配置方面和代码方面
+	3. Hive, HBase的架构, 语句等需要非常熟悉
+	4. 对Flume需要非常熟悉
+	5. Kafka, Azkaban, Redis等不常用的至少需要知道怎么用, 其中 Redis 比较重要
+	6. Linux中awk, sed需要知道怎么用, 比如 awk 中 NR 关键字的作用等等
+	7. 项目架构需要非常清楚, 用到哪些框架, 流程怎样
+	8. 对一些简单算法的原理简单了解
+
+
+
+
+
+
+
+

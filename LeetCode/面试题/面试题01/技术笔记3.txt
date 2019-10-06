@@ -1,0 +1,9 @@
+﻿1.Spark中Standalone模式的执行原理
+2.窄依赖、宽依赖二者的区别
+3.为什么要使用共享变量
+4.Spark Streaming的架构原理
+5.描述DStream离散流
+6.Spark Streaming的工作流程
+7.描述一下你对RDD的认识
+8.描述Spark Streaming中的窗口操作
+9.写出Transformation和Action中的算子（每种至少5个）

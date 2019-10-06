@@ -1,0 +1,93 @@
+﻿12.0 请简述 mapreduce 中的 combine 和 partition 的作用
+答：combiner 是发生在 map 的最后一个阶段，其原理也是一个小型的 reducer，主要作用是减少输出到reduce 的数据量，缓解网络传输瓶颈，提高 reducer 的执行效率。
+partition 的主要作用将 map 阶段产生的所有 kv 对分配给不同的 reducer task 处理，可以将 reduce 阶段的处理负载进行分摊。
+
+14. Hbase 的 rowKey 怎么创建比较好？列簇怎么创建比较好？
+答：
+rowKey 最好要创建有规则的 rowKey，即最好是有序的。
+经常需要批量读取的数据应该让他们的 rowkey 连续；
+将经常需要作为条件查询的关键词组织到 rowkey 中；
+列族的创建：
+按照业务特点，把数据归类，不同类别的放在不同列族。
+
+29. List 与 set 的区别
+答：List 和 Set 都是接口。他们各自有自己的实现类，有无顺序的实现类，也有有顺序的实现类。
+最大的不同就是 List 是可以重复的，而 Set 是不能重复的。
+List 适合经常追加数据，插入，删除数据，但随机取数效率比较低。
+Set 适合经常地随机储存，插入，删除，但是在遍历时效率比较低。
+
+31.三个 datanode 中当有一个 datanode 出现错误时会怎样？
+答：
+Namenode 会通过心跳机制感知到 datanode 下线
+会将这个 datanode 上的 block 块在集群中重新复制一份，恢复文件的副本数量，
+会引发运维团队快速响应，派出同事对下线 datanode 进行检测和修复，然后重新上线。
+
+mapreduce 的大致流程
+答：主要分为八个步骤
+1、对文件进行切片规划
+2、启动相应数量的 maptask 进程
+3、调用 FileInputFormat 中的 RecordReader，读一行数据并封装为 k1、v1
+4、调用自定义的 map 函数，并将 k1v1 传给 map
+5、收集 map 的输出，进行分区和排序
+6、reduce task 任务启动，并从 map 端拉取数据
+7、reduce task 调用自定义的 reduce 函数进行处理
+8、调用 outputformat 的 recordwriter 将结果数据输出
+
+
+49. 在Java中，ArrayList、Vector、LinkedList 的区别及其优缺点？
+HashMap、HashTable 的区别及其优缺点？
+答：ArrayList 和 Vector 是采用数组方式存储数据，Vector 由于使用了 synchronized 方法（线程安全）
+所以性能上比 ArrayList 要差，LinkedList 使用双向链表实现存储，按序号索引数据需要进行向前或向后遍历，但是插入数据时只需要记录本项的前后项即可，所以插入数度较快！
+HashMap 和 HashTable：Hashtable 的方法是同步的，而 HashMap 的方法不是，Hashtable 是基于陈旧的
+Dictionary 类的，HashMap 是 Java 1.2 引进的 Map 接口的一个实现。HashMap 是一个线程不同步的，那
+么就意味着执行效率高，HashTable 是一个线程同步的就意味着执行效率低，但是 HashMap 也可以将线程
+进行同步，这就意味着，我们以后在使用中，尽量使用 HashMap 这个类。
+
+50. 文件大小默认为 64M，改为 128M 有啥影响？
+答：更改文件的 block 块大小，需要根据我们的实际生产中来更改 block 的大小。
+如果 block 定义的太小，大的文件都会被切分成太多的小文件，减慢用户上传效率。
+如果 block 定义的太大，那么太多的小文件可能都会存到一个 block 块中，虽然不浪费硬盘资源，可是还是会增加 namenode 的管理内存压力。
+
+
+1.0 简要描述如何安装配置apache 的一个开源hadoop ，只描述即可，无需列出具体步骤，列出具体步
+骤更好。
+答：
+1 使用 root 账户登录（最好使用普通用户）
+2 修改 IP
+3 修改 host 主机名
+4 配置 SSH 免密码登录
+5 关闭防火墙
+6 安装 JDK
+7 解压 hadoop 安装包
+8 配置 hadoop 的核心文件 hadoop-env.sh，core-site.xml , mapred-site.xml ， hdfs-site.xml，yarn-site.xml,yarn-env.sh
+9 配置 hadoop 环境变量
+10 格式化 hadoop namenode -format
+11 启动节点 start-all.sh
+
+2.0 请列出正常的 hadoop 集群中 hadoop 都分别需要启动哪些进程，他们的作用分别都是什么，请尽量
+列的详细一些。
+答：namenode：负责管理 hdfs 中文件块的元数据，响应客户端请求，管理 datanode 上文件 block
+的均衡，维持副本数量
+Secondarynamenode:主要负责做 checkpoint 操作；也可以做冷备，对一定范围内数据做快照性备份。
+Datanode:存储数据块，负责客户端对数据块的 io 请求
+Jobtracker :管理任务，并将任务分配给 tasktracker。
+Tasktracker: 执行 JobTracker 分配的任务。
+Resourcemanager：管理、分配集群的资源。
+Nodemanager：管理节点上的资源
+
+Journalnode：用于NameNode之间共享数据（NFS 、Quorum Journal Node（用得多））
+
+两个NameNode为了数据同步，会通过一组称作JournalNodes的独立进程进行相互通信。当active状态的NameNode的命名空间有任何修改时，会告知大部分的JournalNodes进程。standby状态的NameNode有能力读取JNs中的变更信息，
+并且一直监控edit log的变化，把变化应用于自己的命名空间。standby可以确保在集群出错时，命名空间状态已经完全同步了。
+Zookeeper：ZK的一个很大的特点是它可以保持高度的一致性，而且它本身可以支持HA，在ZK集群最后，只要保证半数以上节点存活，ZK集群就还能对外提供服务。
+Zkfc：Zookeeper FailoverController（故障转移控制器）：
+在ZKFC的进程内部，运行着3个对象服务：
+
+HealthMonitor：监控NameNode是否不可用或是进入了一个不健康的状态。
+ActiveStandbyElector：控制和监控ZK上的节点的状态。
+ZKFailoverController：协调HealMonitor和ActiveStandbyElector对象，处理它们发来的event变化事件，完成自动切换的过程。
+HDFS的Active、Standby节点与ZK有什么关联呢？
+当一个NameNode被成功切换为Active状态时，它会在ZK内部创建一个临时的znode，在znode中将会保留当前Active NameNode的一些信息，比如主机名等等。
+当ActiveNameNode出现失败或连接超时的情况下，监控程序会将ZK上对应的临时znode进行删除，znode的删除事件会主动触发到下一次的Active NamNode的选择。
+
+因为ZK是具有高度一致性的，它能保证当前最多只能有一个节点能够成功创建znode，成为当前的Active Name。这也就是为什么我们会利用ZK来做HDFS HA的自动切换的原因。

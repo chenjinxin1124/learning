@@ -1,0 +1,8 @@
+面试题如下，有疑问可随时联系我。
+
+场景： spark 从kafka topic 中读取日志数据， 实时统计将用户uid和访问次数结果存入 redis中。
+任务1： 写个kafka producer 程序， 向topic 中发送json数据。
+任务2： spark streaming 进行消费 存入hbase
+json 日志包括，uid,time,os,click.  字段含义是用户id, 访问时间，系统版本，点击次数。
+
+
